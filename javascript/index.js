@@ -2857,7 +2857,7 @@ var rebelmork = new Queen("Rebel Mork", 7, 7, 9, 11, 9, 11, 8, "img/LMD4/RebelMo
 var sirena = new Queen("Sirena", 8, 8, 9, 11, 7, 11, 9, "img/LMD4/SirenaLMD4CastMug.jpg");
 var tiresias = new Queen("Tiresias", 7, 6, 7, 6, 6, 8, 9, "img/LMD4/TiresiasLMD4CastMug.jpg");
 var veracruz = new Queen("Veracruz", 9, 9, 9, 10, 12, 12, 7, "img/LMD4/VeraCruzLMD4CastMug.jpg");
-var lmd = [aurora, cpher, elektravandergeld, georgiana, irisxc, lacarrera, leexafox, lupita, morralisa, papercut, rebelmork, sirena, tiresia
+var lmd = [aurora, cpher, elektravandergeld, georgiana, irisxc, lacarrera, leexafox, lupita, morralisa, papercut, rebelmork, sirena, tiresias, veracruz];
 //DRAG RACE ITALIA
 var ava = new Queen("Ava Hangar", 8, 7, 8, 6, 8, 7, 8, "img/ITA1/AvaHangarDRI1Cast.jpg");
 var divinity = new Queen("Divinity", 8, 7, 8, 7, 8, 7, 8, "img/ITA1/DivinityDRI1Cast.jpg");
