@@ -166,7 +166,7 @@ function actingChallenge() {
     var challenge = new ActingChallenge();
     challenge.generateDescription();
     challenge.rankPerformances();
-    challengeScreen.createButton("Proceed", "queensPerformances()", "button1");
+    queensPerformances();
     actingChallengeCounter++;
     isDesignChallenge = false;
     episodeChallenges.push("Acting");
@@ -211,7 +211,7 @@ function comedyChallenge() {
     var challenge = new ComedyChallenge();
     challenge.generateDescription();
     challenge.rankPerformances();
-    challengeScreen.createButton("Proceed", "queensPerformances()", "button1");
+    queensPerformances();
     comedyChallengeCounter++;
     isDesignChallenge = false;
     episodeChallenges.push("Comedy");
@@ -245,7 +245,7 @@ function danceChallenge() {
     var challenge = new DanceChallenge();
     challenge.generateDescription();
     challenge.rankPerformances();
-    challengeScreen.createButton("Proceed", "queensPerformances()", "button1");
+    queensPerformances();
     danceChallengeCounter++;
     isDesignChallenge = false;
     episodeChallenges.push("Dance");
@@ -288,9 +288,9 @@ function designChallenge() {
     var challenge = new DesignChallenge();
     challenge.generateDescription();
     challenge.rankPerformances();
-    challengeScreen.createButton("Proceed", "queensPerformances()", "button1");
-    designChallengeCounter++;
     isDesignChallenge = true;
+    queensPerformances();
+    designChallengeCounter++;
     if (currentCast.length == 6 && makeoverCounter == false && team == false && currentCast != firstCast && currentCast != secondCast) {
         episodeChallenges.push("Makeover");
         makeoverCounter = true;
@@ -329,7 +329,7 @@ function improvChallenge() {
     var challenge = new ImprovChallenge();
     challenge.generateDescription();
     challenge.rankPerformances();
-    challengeScreen.createButton("Proceed", "queensPerformances()", "button1");
+    queensPerformances();
     improvChallengeCounter++;
     isDesignChallenge = false;
     episodeChallenges.push("Improv");
@@ -357,7 +357,7 @@ function snatchGame() {
     var challenge = new SnatchGame();
     challenge.generateDescription();
     challenge.rankPerformances();
-    challengeScreen.createButton("Proceed", "queensPerformances()", "button1");
+    queensPerformances();
     isDesignChallenge = false;
     snatchCounter = true;
     episodeChallenges.push("Snatch");
@@ -392,7 +392,7 @@ function rusical() {
     var challenge = new Rusical();
     challenge.generateDescription();
     challenge.rankPerformances();
-    challengeScreen.createButton("Proceed", "queensPerformances()", "button1");
+    queensPerformances();
     isDesignChallenge = false;
     episodeChallenges.push("Rusical");
 }
@@ -445,7 +445,7 @@ function ball() {
     var challenge = new Ball();
     challenge.generateDescription();
     challenge.rankPerformances();
-    challengeScreen.createButton("Proceed", "queensPerformances()", "button1");
+    queensPerformances();
     isDesignChallenge = true;
     ballCounter = true;
     episodeChallenges.push("Ball");
@@ -476,7 +476,7 @@ function rumix() {
     var challenge = new Rumix();
     challenge.generateDescription();
     challenge.rankPerformances();
-    challengeScreen.createButton("Proceed", "queensPerformances()", "button1");
+    queensPerformances();
     isDesignChallenge = false;
     episodeChallenges.push("Rumix");
 }
@@ -501,51 +501,22 @@ function talentshow() {
     var challenge = new TalentShow();
     challenge.generateDescription();
     challenge.rankPerformances();
-    challengeScreen.createButton("Proceed", "queensPerformances()", "button1");
     isDesignChallenge = true;
+    queensPerformances();
     episodeChallenges.push("Talent");
 }
 //performance:
 function queensPerformances() {
-    //remove description button:
-    var button1 = document.querySelector("button#button1");
-    button1.remove();
     var performanceScreen = new Scene();
     performanceScreen.createHorizontalLine();
     performanceScreen.createBigText("Queens' performances...");
-    performanceScreen.createBold("", "excellent");
-    performanceScreen.createBold("", "good");
-    performanceScreen.createBold("", "ok");
-    performanceScreen.createBold("", "bad");
-    performanceScreen.createBold("", "horrible");
-    var excellent = document.querySelector("b#excellent");
-    var good = document.querySelector("b#good");
-    var ok = document.querySelector("b#ok");
-    var bad = document.querySelector("b#bad");
-    var horrible = document.querySelector("b#horrible");
-    for (var i = 0; i < currentCast.length; i++) {
-        if (currentCast[i].performanceScore < 6)
-            excellent.innerHTML += currentCast[i].getName() + ", ";
-        else if (currentCast[i].performanceScore >= 6 && currentCast[i].performanceScore < 16)
-            good.innerHTML += currentCast[i].getName() + ", ";
-        else if (currentCast[i].performanceScore >= 16 && currentCast[i].performanceScore < 26)
-            ok.innerHTML += currentCast[i].getName() + ", ";
-        else if (currentCast[i].performanceScore >= 26 && currentCast[i].performanceScore < 31)
-            bad.innerHTML += currentCast[i].getName() + ", ";
-        else if (currentCast[i].performanceScore >= 31 && currentCast[i].performanceScore < 36)
-            horrible.innerHTML += currentCast[i].getName() + ", ";
-    }
-    if (excellent.innerHTML != '')
-        excellent.innerHTML += "slayed the challenge!";
-    if (good.innerHTML != '')
-        good.innerHTML += "did great!";
-    if (ok.innerHTML != '')
-        ok.innerHTML += "did ok.";
-    if (bad.innerHTML != '')
-        bad.innerHTML += "did bad...";
-    if (horrible.innerHTML != '')
-        horrible.innerHTML += "flopped the challenge...";
-    if (isDesignChallenge)
+    var slay = currentCast.filter(function (queen) { return queen.performanceScore < 6; });
+    var great = currentCast.filter(function (queen) { return queen.performanceScore >= 6 && queen.performanceScore < 16; });
+    var good = currentCast.filter(function (queen) { return queen.performanceScore >= 16 && queen.performanceScore < 26; });
+    var bad = currentCast.filter(function (queen) { return queen.performanceScore >= 26 && queen.performanceScore < 31; });
+    var flop = currentCast.filter(function (queen) { return queen.performanceScore >= 31 && queen.performanceScore < 36; });
+    createPerformanceDesc(slay, great, good, bad, flop);
+    if (isDesignChallenge == true || episodeChallenges[episodeChallenges.length - 1] == "Design")
         performanceScreen.createButton("Proceed", "judging()");
     else
         performanceScreen.createButton("Proceed", "runway()", "button2");
@@ -553,9 +524,10 @@ function queensPerformances() {
 //runway:
 function runway() {
     var runwayScreen = new Scene();
+    runwayScreen.createHorizontalLine();
     var button2 = document.querySelector("button#button2");
     button2.remove();
-    runwayScreen.createHeader("Runway!");
+    runwayScreen.createBigText("Runway!");
     var desc;
     (function (desc) {
         desc[desc["feathers."] = 0] = "feathers.";
@@ -586,25 +558,13 @@ function runway() {
         runwayScreen.createParagraph("The theme is: " + desc[randomNumber(0, 21)]);
     else if (currentCast.length == 3 && top3 || currentCast.length == 5 && top4 || currentCast.length == 4 && all_stars || currentCast.length == 2 && team)
         runwayScreen.createParagraph("The theme is... best drag!");
-    for (var i = 0; i < currentCast.length; i++) {
+    for (var i = 0; i < currentCast.length; i++)
         currentCast[i].getRunway();
-        if (currentCast[i].runwayScore < 6) {
-            runwayScreen.createParagraph(currentCast[i].getName() + " had an amazing runway!");
-            currentCast[i].runwayScore = 10;
-        }
-        else if (currentCast[i].runwayScore < 16 && currentCast[i].runwayScore >= 6) {
-            runwayScreen.createParagraph(currentCast[i].getName() + " had a great runway!");
-            currentCast[i].runwayScore = 5;
-        }
-        else if (currentCast[i].runwayScore < 26 && currentCast[i].runwayScore >= 16) {
-            runwayScreen.createParagraph(currentCast[i].getName() + " had an ok runway.");
-            currentCast[i].runwayScore = 0;
-        }
-        else {
-            runwayScreen.createParagraph(currentCast[i].getName() + " had a bad runway...");
-            currentCast[i].runwayScore = -3;
-        }
-    }
+    var slay = currentCast.filter(function (queen) { return queen.runwayScore < 6; });
+    var great = currentCast.filter(function (queen) { return queen.runwayScore >= 6 && queen.runwayScore < 16; });
+    var good = currentCast.filter(function (queen) { return queen.runwayScore >= 16 && queen.runwayScore < 26; });
+    var bad = currentCast.filter(function (queen) { return queen.runwayScore >= 26; });
+    createRunwayDesc(slay, great, good, bad);
     if (currentCast.length > 4)
         runwayScreen.createButton("Proceed", "judging()");
     else if (currentCast.length == 4 && (top3 || lipsync_assassin || team))
@@ -619,6 +579,7 @@ function runway() {
         runwayScreen.createButton("Proceed", "finaleTeamJudging()");
 }
 //helper functions
+////create next challenge
 function createChallenge(challenges, miniChallengeScreen) {
     //first design challenge for normal seasons
     if (currentCast.length == totalCastSize && top3 && s6Premiere == false || currentCast.length == totalCastSize && top4 && s6Premiere == false || currentCast.length == totalCastSize && team || sweatshop || currentCast == firstCast && s6Premiere || currentCast == secondCast && s6Premiere)
@@ -639,7 +600,7 @@ function createChallenge(challenges, miniChallengeScreen) {
     else if (currentCast.length == totalCastSize - 4 && (top4 || (all_stars || lipsync_assassin) && randomNumber(0, 100) < 30) && !ballCounter || currentCast.length == 3 && team)
         miniChallengeScreen.createButton("Proceed", "ball()");
     //rusical
-    else if (currentCast.length > 6 && randomNumber(0, 20) >= 15 && !rusicalCounter || currentCast.length > 5 && randomNumber(0, 20) == 20 && team && rusicalCounter == false)
+    else if (currentCast.length > 6 && randomNumber(0, 20) == 20 && !rusicalCounter || currentCast.length > 5 && randomNumber(0, 20) == 20 && team && rusicalCounter == false)
         miniChallengeScreen.createButton("Proceed", "rusical()");
     //makeover
     else if (currentCast.length == 6 && (top3 || top4) && makeoverCounter == false || currentCast.length == 6 && randomNumber(0, 15) == 15 && (all_stars || lipsync_assassin) && makeoverCounter == false)
@@ -662,6 +623,102 @@ function createChallenge(challenges, miniChallengeScreen) {
             lastChallenge = currentChallenge;
             miniChallengeScreen.createButton("Proceed", currentChallenge);
         }
+    }
+}
+////create performance descriptions
+function createPerformanceDesc(slay, great, good, bad, flop) {
+    var screen = new Scene();
+    if (slay.length !== 0) {
+        for (var i = 0; i < slay.length; i++)
+            screen.createImage(slay[i].image, "darkblue");
+        screen.createBold("", "slay");
+        var slayText = document.getElementById("slay");
+        for (var i = 0; i < slay.length; i++)
+            slayText.innerHTML += slay[i].getName() + ", ";
+        slayText.innerHTML += "slayed the challenge!";
+    }
+    if (great.length !== 0) {
+        for (var i = 0; i < great.length; i++)
+            screen.createImage(great[i].image, "royalblue");
+        screen.createBold("", "great");
+        var greatText = document.getElementById("great");
+        for (var i = 0; i < great.length; i++)
+            greatText.innerHTML += great[i].getName() + ", ";
+        greatText.innerHTML += "had a great performance!";
+    }
+    if (good.length !== 0) {
+        for (var i = 0; i < good.length; i++)
+            screen.createImage(good[i].image);
+        screen.createBold("", "good");
+        var goodText = document.getElementById("good");
+        for (var i = 0; i < good.length; i++)
+            goodText.innerHTML += good[i].getName() + ", ";
+        goodText.innerHTML += "had a good performance.";
+    }
+    if (bad.length !== 0) {
+        for (var i = 0; i < bad.length; i++)
+            screen.createImage(bad[i].image, "pink");
+        screen.createBold("", "bad");
+        var badText = document.getElementById("bad");
+        for (var i = 0; i < bad.length; i++)
+            badText.innerHTML += bad[i].getName() + ", ";
+        badText.innerHTML += "had a bad performance...";
+    }
+    if (flop.length !== 0) {
+        for (var i = 0; i < flop.length; i++)
+            screen.createImage(flop[i].image, "tomato");
+        screen.createBold("", "flop");
+        var flopText = document.getElementById("flop");
+        for (var i = 0; i < flop.length; i++)
+            flopText.innerHTML += flop[i].getName() + ", ";
+        flopText.innerHTML += "flopped the challenge...";
+    }
+}
+function createRunwayDesc(slay, great, good, bad) {
+    var screen = new Scene();
+    if (slay.length !== 0) {
+        for (var i = 0; i < slay.length; i++) {
+            screen.createImage(slay[i].image, "darkblue");
+            slay[i].runwayScore = 10;
+        }
+        screen.createBold("", "slayR");
+        var slayText = document.getElementById("slayR");
+        for (var i = 0; i < slay.length; i++)
+            slayText.innerHTML += slay[i].getName() + ", ";
+        slayText.innerHTML += "slayed the runway!";
+    }
+    if (great.length !== 0) {
+        for (var i = 0; i < great.length; i++) {
+            screen.createImage(great[i].image, "royalblue");
+            great[i].runwayScore = 5;
+        }
+        screen.createBold("", "greatR");
+        var greatText = document.getElementById("greatR");
+        for (var i = 0; i < great.length; i++)
+            greatText.innerHTML += great[i].getName() + ", ";
+        greatText.innerHTML += "had a great runway!";
+    }
+    if (good.length !== 0) {
+        for (var i = 0; i < good.length; i++) {
+            screen.createImage(good[i].image);
+            good[i].runwayScore = 0;
+        }
+        screen.createBold("", "goodR");
+        var goodText = document.getElementById("goodR");
+        for (var i = 0; i < good.length; i++)
+            goodText.innerHTML += good[i].getName() + ", ";
+        goodText.innerHTML += "had a good runway.";
+    }
+    if (bad.length !== 0) {
+        for (var i = 0; i < bad.length; i++) {
+            screen.createImage(bad[i].image, "pink");
+            bad[i].runwayScore = -3;
+        }
+        screen.createBold("", "badR");
+        var badText = document.getElementById("badR");
+        for (var i = 0; i < bad.length; i++)
+            badText.innerHTML += bad[i].getName() + ", ";
+        badText.innerHTML += "had a bad runway...";
     }
 }
 var customCast = [];
@@ -693,17 +750,6 @@ function addQueen() {
     var queen = document.createElement("option");
     queen.text = name;
     list.appendChild(queen);
-    limpiaCampo();
-}
-function limpiaCampo() {
-  document.getElementById("queenName").value = "";
-  document.getElementById("actingStat").value = "";
-  document.getElementById("comedyStat").value = "";
-  document.getElementById("danceStat").value = "";
-  document.getElementById("designStat").value = "";
-  document.getElementById("improvStat").value = "";
-  document.getElementById("runwayStat").value = "";
-  document.getElementById("lipsyncStat").value = "";
 }
 function removeQueen() {
     var list = document.getElementById("cast");
@@ -786,10 +832,14 @@ function randomizeStats() {
         stats[i].value = randomNumber(0, 15).toString();
     }
 }
-var __spreadArray = (this && this.__spreadArray) || function (to, from) {
-    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
-        to[j] = from[i];
-    return to;
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
 };
 var premiereCounter = 0;
 var firstCast = [];
@@ -799,7 +849,7 @@ function doublePremiere() {
         if (s6Premiere || s12Premiere) {
             shuffle(currentCast);
             firstCast = currentCast.splice(0, Math.floor(currentCast.length / 2));
-            secondCast = __spreadArray([], currentCast);
+            secondCast = __spreadArray([], currentCast, true);
         }
     if (premiereCounter == 0) {
         currentCast = firstCast;
@@ -816,7 +866,7 @@ function doublePremiere() {
         newEpisode();
     }
     else if (premiereCounter == 2) {
-        currentCast = __spreadArray(__spreadArray([], firstCast), secondCast);
+        currentCast = __spreadArray(__spreadArray([], firstCast, true), secondCast, true);
         premiereCounter++;
         newEpisode();
     }
@@ -891,7 +941,7 @@ function doublePremiereJudging() {
     topQueens[0].addToTrackRecord("WIN");
     topQueens[0].favoritism += 5;
     topQueens[1].addToTrackRecord("TOP2");
-    topQueens[1].favoritism += 3;
+    topQueens[1].favoritism += 2;
     screen.createButton("Proceed", "doublePremiere()");
 }
 var currentCast = [];
@@ -904,6 +954,7 @@ var porkylip = [];
 var doubleShantay = false;
 var doubleSashay = false;
 var episodeChallenges = [];
+var episodeCount = 0;
 var returningQueen = false;
 var noDouble = false;
 var noReturn = false;
@@ -920,24 +971,17 @@ function newEpisode() {
     topQueens = [];
     bottomQueens = [];
     top2 = [];
-    //queens remaining screen:
+    episodeCount++;
     var queensRemainingScreen = new Scene();
+    if (episodeCount == 1 || premiereCounter <= 2 && (s12Premiere || porkchopPremiere || s6Premiere) || team) {
     queensRemainingScreen.clean();
     queensRemainingScreen.createHeader("Queens remaining...");
     for (var i = 0; i < currentCast.length; i++) {
         queensRemainingScreen.createBold(currentCast[i].getName());
-    }
-     //chaos season
-    if (chaos == true) {
-        for (var i = 0; i < currentCast.length; i++) {
-            currentCast[i]._actingStat = randomNumber(0, 15);
-            currentCast[i]._comedyStat = randomNumber(0, 15);
-            currentCast[i]._danceStat = randomNumber(0, 15);
-            currentCast[i]._designStat = randomNumber(0, 15);
-            currentCast[i]._improvStat = randomNumber(0, 15);
-            currentCast[i]._lipsyncStat = randomNumber(0, 15);
-            currentCast[i]._runwayStat = randomNumber(0, 15);
         }
+    }
+    else {
+        contestantProgress();
     }
     if (currentCast.length == totalCastSize && team == true)
         queensRemainingScreen.createButton("Proceed", "teamsScreen()");
@@ -975,6 +1019,9 @@ function reSimulate() {
     firstCast = [];
     secondCast = [];
     premiereCounter = 0;
+    episodeCount = 0;
+    onFinale = false;
+    onTop4Finale = false;
     totalCastSize = currentCast.length;
     //clean track records
     for (var i = 0; i < currentCast.length; i++) {
@@ -1012,6 +1059,9 @@ function reSimulate() {
 var firstLS = [];
 var secondLS = [];
 var finalLS = [];
+var onFinale = false;
+var onTop4Finale = false;
+;
 function finaleLS() {
     var screen = new Scene();
     screen.clean();
@@ -1063,6 +1113,8 @@ function finaleLipSyncs() {
     screen.createButton("Proceed", "finalLipSync()");
 }
 function finalLipSync() {
+    onTop4Finale = true;
+    onFinale = true;
     var screen = new Scene();
     screen.clean();
     screen.createHeader("The end...");
@@ -1150,6 +1202,7 @@ function finaleTeamJudging() {
     screen.createButton("Proceed", "finaleFinale()");
 }
 function finaleFinale() {
+    onFinale = true;
     var screen = new Scene();
     screen.clean();
     screen.createHeader("The end.");
@@ -1230,11 +1283,14 @@ function contestantProgress() {
     var winner = document.createElement("tr");
     var name = document.createElement("td");
     name.setAttribute("style", "background-color: #f5ebf5; font-weight: bold; height: 100px;");
-    var winnerQueen;
+    if (onFinale) {
+        var winnerQueen = void 0;
     if (!top4)
         winnerQueen = currentCast[0];
-    else
+        else if (onTop4Finale)
         winnerQueen = finalLS[0];
+        else
+            winnerQueen = currentCast[0];
     name.innerHTML = winnerQueen.getName();
     winner.appendChild(name);
     if (!custommode) {
@@ -1242,106 +1298,206 @@ function contestantProgress() {
         photow.setAttribute("style", "background: url("+ winnerQueen.getImg() +"); background-size: 106px 106px; background-position: center;");
         winner.appendChild(photow);
     }
-    for (var i = 0; i < winnerQueen.trackRecord.length+1; i++) {
-        var placement = document.createElement("td");
-        placement.innerHTML = winnerQueen.trackRecord[i];
-        if (placement.innerHTML == "WIN") {
-            placement.setAttribute("style", "font-weight: bold; background-color: royalblue; color: #000;");
-        }
-        else if (placement.innerHTML == "TOP2") {
-            placement.setAttribute("style", "background-color: deepskyblue;");
-        }
-        else if (placement.innerHTML == "LOW") {
-            placement.setAttribute("style", "background-color: pink;");
-        }
-        else if (placement.innerHTML == "HIGH") {
-            placement.setAttribute("style", "background-color: lightblue;");
-        }
-        else if (placement.innerHTML == "BTM2" || placement.innerHTML == "BTM3" || placement.innerHTML == "BTM4" || placement.innerHTML == "BTM5") {
-            placement.setAttribute("style", "background-color: tomato;");
-        }
-        else if (placement.innerHTML == "ELIM") {
-            placement.setAttribute("style", "font-weight: bold; background-color: red;");
-        }
-        else if (placement.innerHTML == "WINNER") {
-            placement.setAttribute("style", "font-weight: bold; background-color: yellow;");
-        }
-        else if (placement.innerHTML == "RUNNER-UP") {
-            placement.setAttribute("style", "font-weight: bold; background-color: silver;");
-        }
-        else if (placement.innerHTML == "ELIMINATED") {
-            placement.setAttribute("style", "font-weight: bold; background-color: sienna;");
-        }
-        else if (placement.innerHTML == "LOST 1ST ROUND") {
-            placement.setAttribute("style", "font-weight: bold; background-color: #FF7C00;");
-        }
-        else if (placement.innerHTML == "LOST 2ND ROUND") {
-            placement.setAttribute("style", "font-weight: bold; background-color: #FFAE00;");
-        }
-        else if (placement.innerHTML == "") {
-            placement.setAttribute("style", "background-color: gray");
-        }
-        else if (placement.innerHTML == "WIN ") {
-            placement.setAttribute("style", "font-weight: bold; background-color: cyan;");
-        }
-        else if (placement.innerHTML == "SAFE") {
-            placement.setAttribute("style", "background-color: white;");
-        }
-        else if (placement.innerHTML == "SAFE ") {
+        for (var i = 0; i < winnerQueen.trackRecord.length; i++) {
+            var placement = document.createElement("td");
+            placement.innerHTML = winnerQueen.trackRecord[i];
+            if (placement.innerHTML == "WIN") {
+                placement.setAttribute("style", "font-weight: bold; background-color: royalblue; color: #000;");
+            }
+            else if (placement.innerHTML == "TOP2") {
+                placement.setAttribute("style", "background-color: deepskyblue;");
+            }
+            else if (placement.innerHTML == "LOW") {
+                placement.setAttribute("style", "background-color: pink;");
+            }
+            else if (placement.innerHTML == "HIGH") {
+                placement.setAttribute("style", "background-color: lightblue;");
+            }
+            else if (placement.innerHTML == "BTM2" || placement.innerHTML == "BTM3" || placement.innerHTML == "BTM4" || placement.innerHTML == "BTM5") {
+                placement.setAttribute("style", "background-color: tomato;");
+            }
+            else if (placement.innerHTML == "ELIM") {
+                placement.setAttribute("style", "font-weight: bold; background-color: red;");
+            }
+            else if (placement.innerHTML == "WINNER") {
+                placement.setAttribute("style", "font-weight: bold; background-color: yellow;");
+            }
+            else if (placement.innerHTML == "RUNNER-UP") {
+                placement.setAttribute("style", "font-weight: bold; background-color: silver;");
+            }
+            else if (placement.innerHTML == "ELIMINATED") {
+                placement.setAttribute("style", "font-weight: bold; background-color: sienna;");
+            }
+            else if (placement.innerHTML == "LOST 1ST ROUND") {
+                placement.setAttribute("style", "font-weight: bold; background-color: #FF7C00;");
+            }
+            else if (placement.innerHTML == "LOST 2ND ROUND") {
+                placement.setAttribute("style", "font-weight: bold; background-color: #FFAE00;");
+            }
+            else if (placement.innerHTML == "") {
+                placement.setAttribute("style", "background-color: gray");
+            }
+            else if (placement.innerHTML == "WIN ") {
+                placement.setAttribute("style", "font-weight: bold; background-color: cyan;");
+            }
+            else if (placement.innerHTML == "SAFE") {
+                placement.setAttribute("style", "background-color: white;");
+            }
+            else if (placement.innerHTML == "SAFE ") {
                 placement.setAttribute("style", "background-color: palegreen; color:#000;");
-        }
-        else if (placement.innerHTML == " SAFE ") {
+            }
+            else if (placement.innerHTML == " SAFE ") {
                 placement.setAttribute("style", "background-color: #7D1935; color:#000;");
-        }
-        else if (placement.innerHTML == "RUN") {
+            }
+            else if (placement.innerHTML == "RUN") {
                 placement.setAttribute("style", "background-color: magenta; color:white;");
-        }
-        else if (placement.innerHTML == "RUN ") {
+            }
+            else if (placement.innerHTML == "RUN ") {
                 placement.setAttribute("style", "background-color: #D3FFB5; color:#000; font-weight: bold;");
-        }
-        else if (placement.innerHTML == "OUT ") {
+            }
+            else if (placement.innerHTML == "OUT ") {
                 placement.setAttribute("style", "background-color: purple; color:white;");
-        }
-        else if (placement.innerHTML == "OUT ") {
+            }
+            else if (placement.innerHTML == "OUT ") {
                 placement.setAttribute("style", "background-color: purple; color:white;");
-        }
-        else if (placement.innerHTML == " WIN") {
-            placement.setAttribute("style", "font-weight: bold; background-color: darkblue; color: white;");
-        }
-        else if (placement.innerHTML == "DISQ") {
-            placement.setAttribute("style", "font-weight: bold; background-color: black; color: white;");
-        }
-        else if (placement.innerHTML == "RTRN") {
-            placement.setAttribute("style", "font-weight: bold; background-color: magenta;");
-        }
-        else if (placement.innerHTML == "RTRN ") {
-            placement.setAttribute("style", "font-weight: bold; background-color: orange;");
-        }
-        else if (placement.innerHTML == " WIN ") {
-            placement.setAttribute("style", "background-color: lightskyblue;");
-        }
-        else if (placement.innerHTML == "LOSS") {
-            placement.setAttribute("style", "background-color: #ff9e9e;");
-        }
-        else if (placement.innerHTML == "undefined") {
+            }
+            else if (placement.innerHTML == " WIN") {
+                placement.setAttribute("style", "font-weight: bold; background-color: darkblue; color: white;");
+            }
+            else if (placement.innerHTML == "DISQ") {
+                placement.setAttribute("style", "font-weight: bold; background-color: black; color: white;");
+            }
+            else if (placement.innerHTML == "RTRN") {
+                placement.setAttribute("style", "font-weight: bold; background-color: magenta;");
+            }
+            else if (placement.innerHTML == "RTRN ") {
+                placement.setAttribute("style", "font-weight: bold; background-color: orange;");
+            }
+            else if (placement.innerHTML == " WIN ") {
+                placement.setAttribute("style", "background-color: lightskyblue;");
+            }
+            else if (placement.innerHTML == "LOSS") {
+                placement.setAttribute("style", "background-color: #ff9e9e;");
+            }
+            else if (placement.innerHTML == "undefined") {
                 placement.setAttribute("style", "font-weight: bold; background-color: lightgray;");
                 placement.innerHTML = winnerQueen.favoritism - winnerQueen.unfavoritism;
+            }
+            winner.appendChild(placement);
         }
-        winner.appendChild(placement);
+        trackRecords.appendChild(winner);
     }
-    trackRecords.appendChild(winner);
-    for (var i = 0; i < eliminatedCast.length; i++) {
+    if (!onFinale) {
+    for (var i = 0; i < currentCast.length; i++) {
         var contestant = document.createElement("tr");
         var name_1 = document.createElement("td");
         name_1.setAttribute("style", "background-color: #f5ebf5; font-weight: bold;  height: 100px;");
-        name_1.innerHTML = eliminatedCast[i].getName();
+        name_1.innerHTML = currentCast[i].getName();
         contestant.appendChild(name_1);
+        if (!custommode) {
+            var photo = document.createElement("td");
+            photo.setAttribute("style", "background: url("+ currentCast[i].getImg() +"); background-size: 106px 106px; background-position: center;");
+            contestant.appendChild(photo);
+        }
+            for (var k = 0; k < currentCast[i].trackRecord.length; k++) {
+                var placement = document.createElement("td");
+                placement.innerHTML = currentCast[i].trackRecord[k];
+            if (placement.innerHTML == "WIN") {
+                    placement.setAttribute("style", "font-weight: bold; background-color: royalblue; color: #000;");
+                }
+                else if (placement.innerHTML == "TOP2") {
+                    placement.setAttribute("style", "background-color: deepskyblue;");
+                }
+                else if (placement.innerHTML == "LOW") {
+                    placement.setAttribute("style", "background-color: pink;");
+                }
+                else if (placement.innerHTML == "HIGH") {
+                    placement.setAttribute("style", "background-color: lightblue;");
+                }
+                else if (placement.innerHTML == "BTM2" || placement.innerHTML == "BTM3" || placement.innerHTML == "BTM4" || placement.innerHTML == "BTM5") {
+                    placement.setAttribute("style", "background-color: tomato;");
+                }
+                else if (placement.innerHTML == "ELIM") {
+                    placement.setAttribute("style", "font-weight: bold; background-color: red;");
+                }
+                else if (placement.innerHTML == "WINNER") {
+                    placement.setAttribute("style", "font-weight: bold; background-color: yellow;");
+                }  
+                else if (placement.innerHTML == "RUNNER UP") {
+                    placement.setAttribute("style", "font-weight: bold; background-color: silver;");
+                }
+                else if (placement.innerHTML == "ELIMINATED") {
+                    placement.setAttribute("style", "font-weight: bold; background-color: sienna;");
+                }
+                else if (placement.innerHTML == "LOST 1ST ROUND") {
+                    placement.setAttribute("style", "font-weight: bold; background-color: #FF7C00;");
+                }
+                else if (placement.innerHTML == "LOST 2ND ROUND") {
+                    placement.setAttribute("style", "font-weight: bold; background-color: #FFAE00;");
+                }
+                else if (placement.innerHTML == "") {
+                    placement.setAttribute("style", "background-color: gray");
+                }
+                else if (placement.innerHTML == "WIN ") {
+                    placement.setAttribute("style", "font-weight: bold; background-color: cyan;");
+                }
+                else if (placement.innerHTML == "SAFE") {
+                    placement.setAttribute("style", "background-color: white;");
+                }
+                else if (placement.innerHTML == "SAFE ") {
+                    placement.setAttribute("style", "background-color: palegreen; color:#000;");
+                }
+                else if (placement.innerHTML == " SAFE ") {
+                    placement.setAttribute("style", "background-color: #7D1935; color:#000;");
+                }
+                else if (placement.innerHTML == "RUN") {
+                    placement.setAttribute("style", "background-color: magenta; color:white;");
+                }
+                else if (placement.innerHTML == "RUN ") {
+                    placement.setAttribute("style", "background-color: #D3FFB5; color:#000; font-weight: bold;");
+                }
+                else if (placement.innerHTML == "OUT ") {
+                    placement.setAttribute("style", "background-color: purple; color:white;");
+                }
+                else if (placement.innerHTML == " WIN") {
+                    placement.setAttribute("style", "font-weight: bold; background-color: darkblue; color: white;");
+                }
+                else if (placement.innerHTML == "DISQ") {
+                    placement.setAttribute("style", "font-weight: bold; background-color: black; color: white;");
+                }
+                else if (placement.innerHTML == "RTRN") {
+                    placement.setAttribute("style", "font-weight: bold; background-color: magenta;");
+                }
+                else if (placement.innerHTML == "RTRN ") {
+                placement.setAttribute("style", "font-weight: bold; background-color: orange;");
+                }
+                else if (placement.innerHTML == " WIN ") {
+                    placement.setAttribute("style", "background-color: lightskyblue;");
+                }
+                else if (placement.innerHTML == "LOSS") {
+                    placement.setAttribute("style", "background-color: #ff9e9e;");
+                }
+                else if (placement.innerHTML == "undefined") {
+                    placement.setAttribute("style", "font-weight: bold; background-color: lightgray;");
+                    placement.innerHTML = currentCast[i].favoritism - currentCast[i].unfavoritism;
+                }
+                contestant.appendChild(placement);
+            }
+            trackRecords.appendChild(contestant);
+        }    
+    }
+    for (var i = 0; i < eliminatedCast.length; i++) {
+        var contestant = document.createElement("tr");
+        var name_2 = document.createElement("td");
+        name_2.setAttribute("style", "background-color: #f5ebf5; font-weight: bold;  height: 100px;");
+        name_2.innerHTML = eliminatedCast[i].getName();
+        contestant.appendChild(name_2);
         if (!custommode) {
             var photo = document.createElement("td");
             photo.setAttribute("style", "background: url("+ eliminatedCast[i].getImg() +"); background-size: 106px 106px; background-position: center;");
             contestant.appendChild(photo);
-        }
-        for (var k = 0; k < eliminatedCast[i].trackRecord.length+1; k++) {
+        }        
+        for (var k = 0; k < eliminatedCast[i].trackRecord.length; k++) {
             var placement = document.createElement("td");
             placement.innerHTML = eliminatedCast[i].trackRecord[k];
             if (placement.innerHTML == "WIN") {
@@ -1364,7 +1520,7 @@ function contestantProgress() {
             }
             else if (placement.innerHTML == "WINNER") {
                 placement.setAttribute("style", "font-weight: bold; background-color: yellow;");
-            }
+            }  
             else if (placement.innerHTML == "RUNNER UP") {
                 placement.setAttribute("style", "font-weight: bold; background-color: silver;");
             }
@@ -1372,7 +1528,7 @@ function contestantProgress() {
                 placement.setAttribute("style", "font-weight: bold; background-color: sienna;");
             }
             else if (placement.innerHTML == "LOST 1ST ROUND") {
-            placement.setAttribute("style", "font-weight: bold; background-color: #FF7C00;");
+                placement.setAttribute("style", "font-weight: bold; background-color: #FF7C00;");
             }
             else if (placement.innerHTML == "LOST 2ND ROUND") {
                 placement.setAttribute("style", "font-weight: bold; background-color: #FFAE00;");
@@ -1393,7 +1549,7 @@ function contestantProgress() {
                 placement.setAttribute("style", "background-color: #7D1935; color:#000;");
             }
             else if (placement.innerHTML == "RUN") {
-                    placement.setAttribute("style", "background-color: magenta; color:white;");
+                placement.setAttribute("style", "background-color: magenta; color:white;");
             }
             else if (placement.innerHTML == "RUN ") {
                 placement.setAttribute("style", "background-color: #D3FFB5; color:#000; font-weight: bold;");
@@ -1402,7 +1558,7 @@ function contestantProgress() {
                 placement.setAttribute("style", "background-color: purple; color:white;");
             }
             else if (placement.innerHTML == " WIN") {
-                placement.setAttribute("style", "font-weight: bold; background-color: darkblue; color: white;");
+            placement.setAttribute("style", "font-weight: bold; background-color: darkblue; color: white;");
             }
             else if (placement.innerHTML == "DISQ") {
                 placement.setAttribute("style", "font-weight: bold; background-color: black; color: white;");
@@ -1426,6 +1582,12 @@ function contestantProgress() {
             contestant.appendChild(placement);
         }
         trackRecords.appendChild(contestant);
+    }
+    main.appendChild(trackRecords);
+    if (onFinale) {
+    screen.createButton("Simulate again!", "reSimulate()");
+    screen.createHorizontalLine();
+    screen.createButton("Back to main page", "location.reload()");
     }
     centering.appendChild(trackRecords);
     if (porkchopPremiere) {
@@ -1542,15 +1704,7 @@ function contestantProgress() {
         }
     main.appendChild(centering);
     //main.appendChild(trackRecords);
-    screen.createButton("Simulate again!", "reSimulate()");
-    screen.createHorizontalLine();
-    screen.createButton("Back to main page", "location.reload()");
 }
-var __spreadArray = (this && this.__spreadArray) || function (to, from) {
-    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
-        to[j] = from[i];
-    return to;
-};
 var totalCastSize;
 function randomNumber(min, max) {
     var randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
@@ -1675,7 +1829,7 @@ function startSimulation(challenge) {
             lipsync_assassin = true;
             allQueens = allQueens.filter(function (queen) { return queen.getLipSyncStat() >= 8; });
             allQueens = allQueens.filter(function (queen) { return currentCast.indexOf(queen) == -1; });
-            allQueensCopy = __spreadArray([], allQueens);
+            allQueensCopy = __spreadArray([], allQueens, true);
         }
         if (select2.options[select2.selectedIndex].value == "s6-premiere")
             s6Premiere = true;
@@ -1889,7 +2043,14 @@ function judgingScreen() {
             judgingScreen.createBold(topQueens[i].getName());
             judgingScreen.createBold(bottomQueens[i].getName());
         }
-    judgingScreen.createBold("You are the tops and bottoms of the week.");
+        judgingScreen.createBold("", "judged");
+        var judged = document.getElementById("judged");
+        for (var i = 0; i < topQueens.length; i++) {
+            judged.innerHTML += topQueens[i].getName() + ", ";
+            judged.innerHTML += bottomQueens[i].getName() + ", ";
+        }
+        judged.innerHTML += "you represent the tops and bottoms of the week.";
+    }
     judgingScreen.createHorizontalLine();
     judgingScreen.createParagraph("", "safeQueens");
     var safeQueens = document.querySelector("p#safeQueens");
@@ -1924,7 +2085,7 @@ function winAndBtm2() {
         topQueens[i].performanceScore -= (topQueens[i].runwayScore - topQueens[i].favoritism);
     topQueens.sort(function (a, b) { return (a.performanceScore - b.performanceScore); });
     //double win:
-    if (topQueens[0].performanceScore == topQueens[1].performanceScore && randomNumber(0, 100) < 80) {
+    if (topQueens[0].performanceScore == topQueens[1].performanceScore && randomNumber(0, 100) < 60) {
         topQueens[0].addToTrackRecord(" WIN");
         topQueens[0].favoritism += 5;
         topQueens[1].addToTrackRecord(" WIN");
@@ -1938,19 +2099,21 @@ function winAndBtm2() {
         screen.createBold(topQueens[0].getName() + ", condragulations, you're the winner of today's challenge!");
         topQueens.splice(0, 1);
     }
-    screen.createParagraph("", "highs");
-    var highs = document.querySelector("p#highs");
-    for (var i = 0; i < topQueens.length; i++) {
-        highs.innerHTML += topQueens[i].getName() + ", ";
-        topQueens[i].addToTrackRecord("HIGH");
-        topQueens[i].favoritism += 1;
+    if (topQueens.length > 0) {
+        for (var i = 0; i < topQueens.length; i++) {
+            topQueens[i].addToTrackRecord("HIGH");
+        }
+        screen.createParagraph("", "highs");
+        var highs = document.getElementById("highs");
+        for (var i = 0; i < topQueens.length; i++)
+            highs.innerHTML += topQueens[i].getName() + ", ";
+        highs.innerHTML += "good job this week, you're safe.";
     }
-    if (topQueens.length > 0)
-        highs.innerHTML += "good work this week, you're safe.";
     screen.createHorizontalLine();
-    screen.createParagraph("", "bottom3");
     if (bottomQueens.length >= 3) {
-        var bottom3 = document.querySelector("p#bottom3");
+        for (var i = 0; i < bottomQueens.length; i++)
+        screen.createParagraph("", "bottom3");
+        var bottom3 = document.getElementById("bottom3");
         for (var i = 0; i < bottomQueens.length; i++)
             bottom3.innerHTML += bottomQueens[i].getName() + ", ";
         bottom3.innerHTML += "you're the bottoms of the week...";
@@ -1976,8 +2139,9 @@ function winAndBtm2() {
         bottomQueens[0].unfavoritism += 1;
         bottomQueens.splice(0, 1);
     }
+    for (var i = 0; i < bottomQueens.length; i++)
     screen.createBold("", "btm2");
-    var btm2 = document.querySelector("b#btm2");
+    var btm2 = document.getElementById("btm2");
     for (var i = 0; i < bottomQueens.length; i++) {
         btm2.innerHTML += bottomQueens[i].getName() + ", ";
     }
@@ -2031,6 +2195,7 @@ function top2AndBtm() {
     top2.push(topQueens[1]);
     topQueens.splice(0, 2);
     screen.createBold(top2[0].getName() + ", " + top2[1].getName() + ", condragulations, you're the Top 2 of the week!");
+    for (var i = 0; i < topQueens.length; i++)
     screen.createParagraph("", "highs");
     var highs = document.querySelector("p#highs");
     for (var i = 0; i < topQueens.length; i++) {
@@ -2041,6 +2206,7 @@ function top2AndBtm() {
     if (topQueens.length > 0)
         highs.innerHTML += "good work this week, you're safe.";
     screen.createHorizontalLine();
+    for (var i = 0; i < bottomQueens.length; i++)
     screen.createBold("", "bottoms");
     var bottoms = document.querySelector("b#bottoms");
     for (var i = 0; i < bottomQueens.length; i++) {
@@ -2048,22 +2214,14 @@ function top2AndBtm() {
     }
     bottoms.innerHTML += "I'm sorry my dears but you're the bottoms of the week.";
     for (var i = 0; i < bottomQueens.length; i++) {
-        if (bottomQueens.length == 3 && currentCast.length > 5) {
-        bottomQueens[i].performanceScore -= (bottomQueens[i].runwayScore - bottomQueens[i].favoritism);
-        bottomQueens.sort(function (a, b) { return (a.performanceScore - b.performanceScore); });
-        bottomQueens[0].addToTrackRecord("LOW");
-        screen.createParagraph(bottomQueens[0].getName() + " ...you are safe.");
-        bottomQueens[0].unfavoritism += 1;
-        bottomQueens.splice(bottomQueens.indexOf(bottomQueens[i]), 1);
-        screen.createBold(bottomQueens[0].getName() + ", " + bottomQueens[1].getName() + ", you're up for elimination.");
-        break;
-        /*if (bottomQueens[i].performanceScore >= 6 && bottomQueens[i].performanceScore < 16) {
+        if (bottomQueens[i].performanceScore >= 6 && bottomQueens[i].performanceScore < 16) {
             screen.createParagraph(bottomQueens[i].getName() + ", you are safe.");
             bottomQueens[i].addToTrackRecord("LOW");
-            bottomQueens[i].unfavoritism += 1;
             bottomQueens.splice(bottomQueens.indexOf(bottomQueens[i]), 1);
+            screen.createImage(bottomQueens[0].image, "tomato");
+            screen.createImage(bottomQueens[1].image, "tomato");
             screen.createBold(bottomQueens[0].getName() + ", " + bottomQueens[1].getName() + ", you're up for elimination.");
-          */  break;
+            break;
         }
     }
     screen.createHorizontalLine();
@@ -2087,43 +2245,42 @@ function topAndBtm() {
         topQueens[i].performanceScore -= (topQueens[i].runwayScore - topQueens[i].favoritism);
     topQueens.sort(function (a, b) { return (a.performanceScore - b.performanceScore); });
     top2.push(topQueens[0]);
+    top2[0].favoritism += 5;
     topQueens.splice(0, 1);
     screen.createBold(top2[0].getName() + ", condragulations, you're the Top All Star of the week!");
+    for (var i = 0; i < topQueens.length; i++)
     screen.createParagraph("", "highs");
     var highs = document.querySelector("p#highs");
     for (var i = 0; i < topQueens.length; i++) {
         highs.innerHTML += topQueens[i].getName() + ", ";
         topQueens[i].addToTrackRecord("HIGH");
-        topQueens[i].favoritism += 1;
     }
     if (topQueens.length > 0)
         highs.innerHTML += "good work this week, you're safe.";
     screen.createHorizontalLine();
+    ;
+    if (currentCast.length > 6) {
+        for (var i = 0; i < bottomQueens.length; i++)
     screen.createBold("", "bottoms");
     var bottoms = document.querySelector("b#bottoms");
     for (var i = 0; i < bottomQueens.length; i++) {
         bottoms.innerHTML += bottomQueens[i].getName() + ", ";
     }
     bottoms.innerHTML += "I'm sorry my dears but you're the bottoms of the week.";
-    for (var i = 0; i < bottomQueens.length; i++) {
-        if (bottomQueens.length == 3 && currentCast.length > 4) {
+        for (var i = 0; i < bottomQueens.length; i++)
         bottomQueens[i].performanceScore -= (bottomQueens[i].runwayScore - bottomQueens[i].favoritism);
         bottomQueens.sort(function (a, b) { return (a.performanceScore - b.performanceScore); });
         bottomQueens[0].addToTrackRecord("LOW");
-        screen.createParagraph(bottomQueens[0].getName() + " ...you are safe.");
+        screen.createBold(bottomQueens[0].getName() + "... you are safe.");
         bottomQueens[0].unfavoritism += 1;
-        bottomQueens.splice(bottomQueens.indexOf(bottomQueens[i]), 1);
-        screen.createBold(bottomQueens[0].getName() + ", " + bottomQueens[1].getName() + ", you're up for elimination.");
-        break;
-       /* if (bottomQueens[i].performanceScore >= 6 && bottomQueens[i].performanceScore < 16 && currentCast.length > 6) {
-            screen.createParagraph(bottomQueens[i].getName() + ", you are safe.");
-            bottomQueens[i].addToTrackRecord("LOW");
-            bottomQueens[i].unfavoritism += 1;
-            bottomQueens.splice(bottomQueens.indexOf(bottomQueens[i]), 1);
-            screen.createBold(bottomQueens[0].getName() + ", " + bottomQueens[1].getName() + ", you're up for elimination.");
-            break;
-        */}
+        bottomQueens.splice(0, 1);
     }
+    for (var i = 0; i < bottomQueens.length; i++)
+    screen.createParagraph("", "btms");
+    var btms = document.getElementById("btms");
+    for (var i = 0; i < bottomQueens.length; i++)
+        btms.innerHTML += bottomQueens[i].getName() + ", ";
+    btms.innerHTML += ", you're up for elimination.";
     screen.createHorizontalLine();
     screen.createBigText("After deliberation...");
     if (randomNumber(0, 100) <= 45 && currentCast.length <= totalCastSize - 2)
@@ -2167,9 +2324,9 @@ function lipSync() {
     if (score1 > 7 && score2 > 7 && randomNumber(0, 100) <= 50 && !doubleShantay && noDouble == false && currentCast.length > 5) {
         screen.createBold("Condragulations, shantay you both stay!!");
         bottomQueens[0].addToTrackRecord("BTM2");
-        bottomQueens[0].unfavoritism += 3;
+        bottomQueens[0].unfavoritism += 5;
         bottomQueens[1].addToTrackRecord("BTM2");
-        bottomQueens[1].unfavoritism += 3;
+        bottomQueens[1].unfavoritism += 5;
         doubleShantay = true;
     }
     else if (score1 < 4 && score2 < 4 && randomNumber(0, 100) <= 10 && !doubleSashay && currentCast.length > 5 && noDouble == false) {
@@ -2188,9 +2345,9 @@ function lipSync() {
         var disqualifiedQueen = currentCast[randomNumber(0, currentCast.length - 1)];
         screen.createBold(disqualifiedQueen.getName() + ", it has come to my attention that you have broken the rules of this competition. I must ask you to sashay away.");
         bottomQueens[0].addToTrackRecord("BTM2");
-        bottomQueens[0].unfavoritism += 3;
+        bottomQueens[0].unfavoritism += 5;
         bottomQueens[1].addToTrackRecord("BTM2");
-        bottomQueens[1].unfavoritism += 3;
+        bottomQueens[1].unfavoritism += 5;
         disqualifiedQueen.trackRecord.pop();
         disqualifiedQueen.addToTrackRecord("DISQ");
         eliminatedCast.unshift(disqualifiedQueen);
@@ -2202,7 +2359,7 @@ function lipSync() {
         bottomQueens[0].unfavoritism += 3;
         screen.createBold(bottomQueens[1].getName() + ", sashay away...");
         bottomQueens[1].addToTrackRecord("ELIM");
-        bottomQueens[1].unfavoritism += 5;
+        bottomQueens[1].unfavoritism += 3;
         eliminatedCast.unshift(bottomQueens[1]);
         currentCast.splice(currentCast.indexOf(bottomQueens[1]), 1);
     }
@@ -2364,7 +2521,7 @@ function lsaLipSync() {
     bottomQueens.splice(bottomQueens.indexOf(top2[0].lipstick), 1);
     currentCast.splice(currentCast.indexOf(top2[0].lipstick), 1);
     for (var i = 0; i < bottomQueens.length; i++) {
-        if (bottomQueens.length == 4){
+        if (bottomQueens.length == 4)
             bottomQueens[i].addToTrackRecord("BTM5");
             bottomQueens[i].unfavoritism += 2;
         }
@@ -2382,7 +2539,7 @@ function lsaLipSync() {
         }
         else{
             bottomQueens[i].addToTrackRecord("BTM2");
-            bottomQueens[i].unfavoritism += 3;
+            bottomQueens[i].unfavoritism += 2;
         }
         bottomQueens[i].votes = 0;
     }
@@ -2978,7 +3135,7 @@ function queenReturnsVote() {
         screen.createBold(eliminatedCast[i].getName() + ": " + eliminatedCast[i].votes.toString() + " votes");
     }
     screen.createHorizontalLine();
-    var queen = __spreadArray([], eliminatedCast).sort(function (a, b) { return b.votes - a.votes; })[0];
+    var queen = __spreadArray([], eliminatedCast, true).sort(function (a, b) { return b.votes - a.votes; })[0];
     screen.createBold(queen.getName() + " returns to the competition!");
     currentCast.push(queen);
     eliminatedCast.splice(eliminatedCast.indexOf(queen), 1);
@@ -3152,14 +3309,15 @@ var Scene = /** @class */ (function () {
         this._MainBlock.innerHTML = '';
     };
     Scene.prototype.createHeader = function (text) {
-        var header = document.createElement("h1");
-        header.innerHTML = text;
-        this._MainBlock.appendChild(header);
+        var title = document.getElementById("MainTitle");
+        title.innerHTML = text;
     };
     Scene.prototype.createBigText = function (text) {
         var big = document.createElement("big");
+        var p = document.createElement("p");
         big.innerHTML = text;
-        this._MainBlock.appendChild(big);
+        p.appendChild(big);
+        this._MainBlock.appendChild(p);
     };
     Scene.prototype.createParagraph = function (text, id) {
         if (id === void 0) { id = ''; }
@@ -3188,6 +3346,13 @@ var Scene = /** @class */ (function () {
     Scene.prototype.createHorizontalLine = function () {
         var hr = document.createElement("hr");
         this._MainBlock.appendChild(hr);
+    };
+    Scene.prototype.createImage = function (source, color) {
+        if (color === void 0) { color = "black"; }
+        var image = document.createElement("img");
+        image.src = source;
+        image.setAttribute("style", "border-color: " + color);
+        this._MainBlock.appendChild(image);
     };
     return Scene;
 }());
@@ -3513,7 +3678,7 @@ var allLsSongs = [
     "See You Again by Miley Cyrus",
     "Spice Up Your Life by Spice Girls"
 ];
-var lsSongs = __spreadArray([], allLsSongs);
+var lsSongs = __spreadArray([], allLsSongs, true);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -3585,7 +3750,7 @@ function teamsScreen() {
         currentCast.splice(currentCast.indexOf(QueenA), 1);
         currentCast.splice(currentCast.indexOf(QueenB), 1);
     }
-    currentCast = __spreadArray([], teamList);
+    currentCast = __spreadArray([], teamList, true);
     totalCastSize = currentCast.length;
     screen.createButton("Proceed", "miniChallenge()");
 }
