@@ -897,15 +897,19 @@ function porkchopLipsyncs() {
                 lipSync_1[i_1].getASLipsync();
             }
             lipSync_1.sort(function (a, b) { return (b.lipsyncScore - a.lipsyncScore); });
-            screen.createBold(lipSync_1[0].getName() + ", shantay you stay!");
-            screen.createBold(lipSync_1[1].getName() + " and " + lipSync_1[2].getName() + ", you're getting the porkchop...");
-            lipSync_1[0].addToTrackRecord(" WIN ");
-            lipSync_1[1].addToTrackRecord("LOSS");
-            lipSync_1[2].addToTrackRecord("LOSS");
-            firstCast.push(lipSync_1[0]);
-            porkylip.push(lipSync_1[0]);
-            secondCast.push(lipSync_1[1], lipSync_1[2]);
-            porkylip.push(lipSync_1[1], lipSync_1[2]);
+            queen1 = lipSync_1[0];
+            queen2 = lipSync_1[1];
+            queen3 = lipSync_1[2];
+            screen.createImage(queen1.image, "green");
+            screen.createBold(queen1.getName() + ", shantay you stay!");
+            screen.createImage(queen2.image, "orange");
+            screen.createImage(queen3.image, "orange");
+            screen.createBold(queen2.getName() + " and " + queen3.getName() + ", you're getting the porkchop...");
+            queen1.addToTrackRecord(" WIN ");
+            queen2.addToTrackRecord("LOSS");
+            queen3.addToTrackRecord("LOSS");
+            firstCast.push(queen1);
+            secondCast.push(queen2, queen3);
         }
         else {
             screen.createImage(queen1.image, "royalblue");
@@ -917,14 +921,16 @@ function porkchopLipsyncs() {
                 lipSync_2[i_2].getASLipsync();
             }
             lipSync_2.sort(function (a, b) { return (b.lipsyncScore - a.lipsyncScore); });
-            screen.createBold(lipSync_2[0].getName() + ", shantay you stay!");
-            screen.createBold(lipSync_2[1].getName() + ", you're getting the porkchop...");
-            lipSync_2[0].addToTrackRecord(" WIN ");
-            lipSync_2[1].addToTrackRecord("LOSS");
-            firstCast.push(lipSync_2[0]);
-            porkylip.push(lipSync_2[0]);
-            secondCast.push(lipSync_2[1]);
-            porkylip.push(lipSync_2[1]);
+            queen1 = lipSync_2[0];
+            queen2 = lipSync_2[1];
+            screen.createImage(queen1.image, "green");
+            screen.createBold(queen1.getName() + ", shantay you stay!");
+            screen.createImage(queen2.image, "orange");
+            screen.createBold(queen2.getName() + ", you're getting the porkchop...");
+            queen1.addToTrackRecord(" WIN ");
+            queen2.addToTrackRecord("LOSS");
+            firstCast.push(queen1);
+            secondCast.push(queen2);
         }
     }
     episodeChallenges.push("Porkchop");
