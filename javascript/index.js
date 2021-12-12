@@ -762,9 +762,7 @@ function removeQueen() {
     }
     list.options[list.selectedIndex].remove();
 }
-var custommode = false;
 function customStartSimulation() {
-    custommode = true;
     if (customCast.length == 0) {
         window.alert("Your cast is empty!");
         return;
@@ -966,7 +964,6 @@ var safeQueens = [];
 var topQueens = [];
 var bottomQueens = [];
 var top2 = [];
-var porkylip = [];
 var doubleShantay = false;
 var doubleSashay = false;
 var episodeChallenges = [];
@@ -1060,9 +1057,6 @@ function reSimulate() {
     doubleShantay = false;
     doubleSashay = false;
     returningQueen = false;
-    assasintable = [];
-    assasinlipstick = [];
-    porkylip = [];
     //refill lip-sync songs and lsa
     lsSongs = allLsSongs;
     allQueens = allQueensCopy;
@@ -2024,7 +2018,7 @@ function judging() {
         }
         judgingScreen();
     }
-    else if (currentCast.length <= 5 && lipsync_assassin) {
+    else if (currentCast.length <= 6 && lipsync_assassin) {
         //add 1 queen to the top and the rest to the btm
         currentCast.sort(function (a, b) { return (a.performanceScore - b.performanceScore); });
         topQueens.push(currentCast[0]);
@@ -2625,8 +2619,6 @@ function lsaLipSync() {
     }
     if ((s6Premiere || s12Premiere || porkchopPremiere) == true && premiereCounter < 3)
         screen.createButton("Proceed", "doublePremiere()");
-    else if (CheckForReturning() == true && noReturn == false)
-        screen.createButton("Proceed", "returningQueenScreen()");
     else
         screen.createButton("Proceed", "newEpisode()");
 }
@@ -2707,9 +2699,6 @@ var Queen = /** @class */ (function () {
     };
     Queen.prototype.addToTrackRecord = function (placement) {
         this.trackRecord.push(placement);
-    };
-    Queen.prototype.getImg = function () {
-        return this._image;
     };
     return Queen;
 }());
